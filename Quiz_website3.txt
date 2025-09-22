@@ -1,0 +1,80 @@
+const questions = [
+  { 
+    question: "How many states are present in India?",
+    options: ["A.20", "B.21", "C.28", "D.23"],
+    answer: "C.28"
+  },
+  { 
+    question: "What is the currency of America?",
+    options: ["A.Dollar", "B.Rupee", "C.European Euro", "D.Pounds"],
+    answer: "A.Dollar"
+  },
+  { 
+    question: "Which is the biggest animal?",
+    options: ["A.Dolphin","B.Blue Whale","C.Tiger Shark","D.Octopus"],
+    answer: "B.Blue Whale"
+  },
+  { 
+    question: "How many countries are in Asia?",
+    options: ["A.35","B.30","C.42","D.48"],
+    answer: "D.48"
+  },
+  { 
+    question: "What is the abundant gas in Earth's atmosphere?",
+    options: ["A.Nitrogen","B.Oxygen","C.Carbon-Dioxide","D.Hydrogen"],
+    answer: "A.Nitrogen"
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionContainer = document.getElementById("question-container");
+const optionsContainer = document.getElementById("options-container");
+const nextBtn = document.getElementById("next-btn");
+const resultContainer = document.getElementById("result");
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  questionContainer.textContent = q.question;
+  optionsContainer.innerHTML = "";
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.classList.add("option");
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(opt);
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected) {
+  if (selected === questions[currentQuestion].answer) {
+    score++;
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  questionContainer.classList.add("hidden");
+  optionsContainer.classList.add("hidden");
+  nextBtn.classList.add("hidden");
+  resultContainer.classList.remove("hidden");
+  const percentage = Math.round((score / questions.length) * 100);
+  resultContainer.textContent = `Your score: ${percentage}%`;
+}
+
+nextBtn.onclick = () => {
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+};
+
+showQuestion();
